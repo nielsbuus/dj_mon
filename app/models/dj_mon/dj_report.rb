@@ -1,6 +1,6 @@
 module DjMon
   class DjReport
-    TIME_FORMAT = "%b %d %H:%M:%S"
+    TIME_FORMAT = "%b %d %H:%M:%S %z"
 
     attr_accessor :delayed_job
 
@@ -10,7 +10,7 @@ module DjMon
 
     def as_json(options={})
       {
-        :id => delayed_job.id,
+        :id => delayed_job.id.to_s,
         :payload => payload(delayed_job),
         :priority => delayed_job.priority,
         :attempts => delayed_job.attempts,
@@ -73,8 +73,16 @@ module DjMon
     end
 
     private
+    def in_time_zone time
+      if Rails.configuration.dj_mon.timezone.present?
+        time.in_time_zone(Rails.configuration.dj_mon.timezone)
+      else
+        time
+      end
+    end
+
     def l_datetime time
-      time.present? ? time.strftime(TIME_FORMAT) : ""
+      time.present? ? in_time_zone(time).strftime(TIME_FORMAT) : ""
     end
   end
 
