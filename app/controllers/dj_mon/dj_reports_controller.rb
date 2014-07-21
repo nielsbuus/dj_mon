@@ -3,7 +3,7 @@ module DjMon
     respond_to :json, :html
     layout 'dj_mon'
 
-    before_filter :authenticate
+    before_filter :authenticate, unless: ->{ Rails.configuration.dj_mon.password.blank? }
     before_filter :set_api_version
 
     def index
