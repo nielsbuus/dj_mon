@@ -1,5 +1,11 @@
 module DjMon
   class DjReportsController < ActionController::Base
+
+    auth_monkey_patch = Rails.configuration.dj_mon.auth_monkey_patch
+    if auth_monkey_patch.present?
+      instance_exec(&auth_monkey_patch)
+    end
+
     respond_to :json, :html
     layout 'dj_mon'
 
