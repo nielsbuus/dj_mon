@@ -41,12 +41,22 @@ Mount it in `routes.rb`
 
     mount DjMon::Engine => 'dj_mon'
 
-This uses http basic auth for authentication. Set the credentials in an initializer - `config/initializers/dj_mon.rb`
+DJ Mon has NO authentication by default, so unless you are running a trusted environment or wants the world to see your delayed jobs, you better add some.
 
-    YourApp::Application.config.dj_mon.username = "dj_mon"
-    YourApp::Application.config.dj_mon.password = "password"
-    
-If the credentials are not set, then the username and password are assumed to be the above mentioned.
+This is done by defining a monkey patch proc in a Rails initializer, which is then executed inside any controller class definitions that DJ Mon contains.
+
+E.g. in `config/initializers/dj_mon.rb`
+
+    YourApp::Application.config.dj_mon.auth_monkey_patch = -> {
+       before_filter :totally_simple_authentication
+       
+       def totally_simple_authentication
+          if params[:totally_secret_token] == env['DJ_MON_TOKEN']
+            cookies[:dj_mon_authenticated] = true
+          end
+          cookies[:dj_mon_authenticated].present?
+       end
+    }
 
 Now visit `http://localhost:3000/dj_mon` and profit!
 
@@ -57,7 +67,6 @@ Now visit `http://localhost:3000/dj_mon` and profit!
 ## Contributing
 
 ### Things to do
-* Rails 4 compatibility.
 * Mostly in the iPhone app. Mentioned in the [README](https://github.com/akshayrawat/dj_mon_iphone).
 
 
