@@ -3,7 +3,6 @@ module DjMon
     respond_to :json, :html
     layout 'dj_mon'
 
-    before_filter :authenticate, unless: ->{ Rails.configuration.dj_mon.password.blank? }
     before_filter :set_api_version
 
     def index
@@ -50,13 +49,6 @@ module DjMon
     end
 
     protected
-
-    def authenticate
-      authenticate_or_request_with_http_basic do |username, password|
-        username == Rails.configuration.dj_mon.username &&
-        password == Rails.configuration.dj_mon.password
-      end
-    end
 
     def set_api_version
       response.headers['DJ-Mon-Version'] = DjMon::VERSION
