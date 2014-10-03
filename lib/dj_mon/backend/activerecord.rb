@@ -21,7 +21,7 @@ module DjMon
         end
 
         def all
-          Delayed::Job.scoped
+          Delayed::Job.all
         end
 
         def failed
