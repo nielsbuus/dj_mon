@@ -41,7 +41,7 @@ module DjMon
     def retry
       DjMon::Backend.retry params[:id]
       respond_to do |format|
-        format.html { redirect_to root_url, :notice => "The job has been queued for a re-run" }
+        format.html { redirect_to root_path, :notice => "The job has been queued for a re-run" }
         format.json { head(:ok) }
       end
     end
@@ -49,7 +49,7 @@ module DjMon
     def destroy
       DjMon::Backend.destroy params[:id]
       respond_to do |format|
-        format.html { redirect_to root_url, :notice => "The job was deleted" }
+        format.html { redirect_to root_path, :notice => "The job was deleted" }
         format.json { head(:ok) }
       end
     end
