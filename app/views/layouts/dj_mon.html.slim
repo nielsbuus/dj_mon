@@ -1,12 +1,6 @@
 doctype html
 html
   head lang="en"
-    script
-      | var dj_counts_dj_reports_path = "#{dj_counts_dj_reports_path}";
-    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
-    = javascript_include_tag "//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"
-    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"
-    = javascript_include_tag "dj_mon/dj_mon"
     = stylesheet_link_tag "//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
     = stylesheet_link_tag "dj_mon/dj_mon", media: "screen, projection"
     = yield :head
@@ -91,3 +85,9 @@ html
             .modal-footer
               = link_to "Close", '#', class: 'btn btn-primary', 'data-dismiss': 'modal'
 
+  script
+    | var dj_counts_dj_reports_path = "#{dj_counts_dj_reports_path}";
+  = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+  = javascript_include_tag "//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"
+  = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"
+  = javascript_include_tag "dj_mon/dj_mon"

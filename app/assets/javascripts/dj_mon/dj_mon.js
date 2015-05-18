@@ -10,7 +10,24 @@ window.bindModals = function() {
   });
 };
 
-$(function() {
+window.bindRemote = function() {
+  $('a[data-remote]').on('click', function(e) {
+    e.preventDefault();
+    var el = $(this),
+        method = el.data('method').toUpperCase();
+
+    if (method === 'DELETE') {
+      el.closest('tr').fadeOut();
+    }
+
+    $.ajax({
+      url: el.attr('href'),
+      method: method
+    })
+  });
+}
+
+$(document).ready(function() {
   $('a[data-toggle="tab"]').bind('shown.bs.tab', function(e) {
     var currentTab = e.target;
     var tabContent = $($(currentTab).attr('href'));
@@ -27,6 +44,7 @@ $(function() {
 
       tabContent.html(output);
       bindModals();
+      bindRemote();
     });
   });
 
