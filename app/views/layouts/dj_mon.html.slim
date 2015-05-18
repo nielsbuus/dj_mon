@@ -1,0 +1,93 @@
+doctype html
+html
+  head lang="en"
+    script
+      | var dj_counts_dj_reports_path = "#{dj_counts_dj_reports_path}";
+    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+    = javascript_include_tag "//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"
+    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"
+    = javascript_include_tag "dj_mon/dj_mon"
+    = stylesheet_link_tag "//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+    = stylesheet_link_tag "dj_mon/dj_mon", media: "screen, projection"
+    = yield :head
+
+  body
+    header
+      .navbar.navbar-default
+        .container-fluid
+          .navbar-header
+            = link_to "DJ Mon", dj_reports_path, class: "navbar-brand"
+
+          a#settings.btn.btn-default.navbar-btn.navbar-right href="#dj_settings_template" data-content="#{DjMon::DjReport.settings.to_json}" data-toggle="modal" data-target="#settings-modal" Settings
+          p.navbar-text.navbar-right#dj-counts-view
+
+    .container-fluid
+      - if flash[:notice]
+        .alert.alert-success
+          = flash[:notice]
+
+      = yield
+
+    script#dj_counts_template type="text/x-handlebars-template"
+      span.badge.badge-warning
+        | {{failed}} failed
+      span.badge.badge-info
+        | {{queued}} queued
+      span.badge.badge-info
+        | {{active}} active
+      span.badge.badge-info
+        | {{all}} all
+
+    script#dj_settings_template type="text/x-handlebars-template"
+      .modal.fade#settings-modal
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close type="button" data-dismiss="modal" ×
+              h4 Settings
+            .modal-body
+              table.table.table-bordered.table-striped
+                tr
+                  td Delayed Job version
+                  td
+                    code
+                      | {{content.delayed_job_version}}
+                tr
+                  td DJ Mon version
+                  td
+                    code
+                      | {{content.dj_mon_version}}
+                tr
+                  td Destroy failed jobs
+                  td
+                    code
+                      | {{content.destroy_failed_jobs}}
+                tr
+                  td Sleep delay
+                  td
+                    code
+                      | {{content.sleep_delay}} seconds
+                tr
+                  td Max attempts
+                  td
+                    code
+                      | {{content.max_attempts}}
+                tr
+                  td Max run time
+                  td
+                    code
+                      | {{content.max_run_time}} seconds
+                tr
+                  td Read ahead
+                  td
+                    code
+                      | {{content.read_ahead}}
+                tr
+                  td Delay Jobs
+                  td
+                    code
+                      | {{content.delay_jobs}}
+
+            .modal-footer
+              = link_to "Close", '#', class: 'btn btn-primary', 'data-dismiss': 'modal'
+
