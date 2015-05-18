@@ -1,36 +1,35 @@
 !!! 5
 %html
-  %head{:lang => "en"}
-    %meta{:name => "apple-itunes-app", :content => "app-id=552732872"}
+  %head{lang: "en"}
+    %meta{name: "apple-itunes-app", content: "app-id=552732872"}
     %script
       var dj_counts_dj_reports_path = "#{dj_counts_dj_reports_path}"
     = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
     = javascript_include_tag "dj_mon/dj_mon"
-    = stylesheet_link_tag "dj_mon/dj_mon", :media => "screen, projection"
+    = stylesheet_link_tag "dj_mon/dj_mon", media: "screen, projection"
     = yield :head
 
   %body
     %header
       .navbar.navbar-fixed-top
         .navbar-inner
-          .container
+          .container-fluid
             .pull-left
-              = link_to "DJ Mon", dj_reports_path, :class => "brand"
+              = link_to "DJ Mon", dj_reports_path, class: "brand"
             .pull-right
-              = link_to "Settings", "#dj_settings_template", :rel => 'modal', "data-content" => DjMon::DjReport.settings.to_json, :id => "settings", :class => "btn btn-primary btn-mini"
+              = link_to "Settings", "#dj_settings_template", rel: 'modal', "data-content" => DjMon::DjReport.settings.to_json, id: "settings", class: "btn btn-primary btn-mini"
 
             .pull-right
               #dj-counts-view
 
-    .container.centered
+    .container-fluid
       - if flash[:notice]
         .alert.alert-success
           = flash[:notice]
 
-    .container
       = yield
 
-    %script#dj_counts_template{ :type=> "text/x-handlebars-template" }
+    %script#dj_counts_template{ type: "text/x-handlebars-template" }
       %span.badge.badge-warning
         {{failed}} failed
       %span.badge.badge-info
@@ -40,10 +39,10 @@
       %span.badge.badge-info
         {{all}} all
 
-    %script#dj_settings_template{ :type=> "text/x-handlebars-template" }
+    %script#dj_settings_template{ type: "text/x-handlebars-template" }
       .modal.hide
         .modal-header
-          %button{ :type => "button", :class => "close", 'data-dismiss' => "modal" }
+          %button{ type: "button", class: "close", 'data-dismiss' => "modal" }
             ×
           %h3
             Settings
@@ -91,5 +90,5 @@
                 <code>{{content.delay_jobs}}</code>
 
         .modal-footer
-          = link_to "Close", '#', :class => 'btn btn-primary', 'data-dismiss'=> 'modal'
+          = link_to "Close", '#', class: 'btn btn-primary', 'data-dismiss'=> 'modal'
 
