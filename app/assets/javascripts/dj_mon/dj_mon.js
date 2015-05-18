@@ -1,8 +1,12 @@
-window.bindModalClicks = function() {
+window.bindModals = function() {
   $('a[data-toggle=modal]').on('click', function() {
     var template = $($(this).attr('href')).html();
     var output = Mustache.render(template, { content: $(this).data('content') });
     $(output).appendTo($('body'));
+
+    $('.modal').on('hidden.bs.modal', function(e) {
+      $(this).remove();
+    });
   });
 };
 
@@ -22,13 +26,11 @@ $(function() {
       }
 
       tabContent.html(output);
-
-      bindModalClicks();
+      bindModals();
     });
   });
 
   $('.nav.nav-tabs li.active a[data-toggle="tab"]').trigger('shown.bs.tab');
-  bindModalClicks();
 
   (function refreshCount() {
     $.getJSON(dj_counts_dj_reports_path).success(function(data){
