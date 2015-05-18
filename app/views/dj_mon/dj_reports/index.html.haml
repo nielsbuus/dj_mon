@@ -18,8 +18,8 @@
   .tab-pane#active{ 'data-url'=> active_dj_reports_path }
   .tab-pane#queued{ 'data-url'=> queued_dj_reports_path }
 
-%script#dj_reports_template{ :type=> "text/x-handlebars-template" }
-  %table.table.table-striped#jobs-table
+%script#dj_reports_template{ type: "text/x-handlebars-template" }
+  %table.table.table-striped.table-bordered#jobs-table
     %thead
       %tr
         %th
@@ -43,7 +43,7 @@
       {{#.}}
       %tr
         %td
-          .label.label-info
+          %code
             {{queue}}
         %td
           <a href="#payload_template" data-content="{{payload}}" rel='modal' title='Payload'> {{id}} </a>
