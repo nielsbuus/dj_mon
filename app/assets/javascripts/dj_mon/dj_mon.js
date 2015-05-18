@@ -1,12 +1,33 @@
-window.bindModalClicks = function() {
+window.bindModals = function() {
   $('a[data-toggle=modal]').on('click', function() {
     var template = $($(this).attr('href')).html();
     var output = Mustache.render(template, { content: $(this).data('content') });
     $(output).appendTo($('body'));
+
+    $('.modal').on('hidden.bs.modal', function(e) {
+      $(this).remove();
+    });
   });
 };
 
-$(function() {
+window.bindRemote = function() {
+  $('a[data-remote]').on('click', function(e) {
+    e.preventDefault();
+    var el = $(this),
+        method = el.data('method').toUpperCase();
+
+    if (method === 'DELETE') {
+      el.closest('tr').fadeOut();
+    }
+
+    $.ajax({
+      url: el.attr('href'),
+      method: method
+    })
+  });
+}
+
+$(document).ready(function() {
   $('a[data-toggle="tab"]').bind('shown.bs.tab', function(e) {
     var currentTab = e.target;
     var tabContent = $($(currentTab).attr('href'));
@@ -22,13 +43,12 @@ $(function() {
       }
 
       tabContent.html(output);
-
-      bindModalClicks();
+      bindModals();
+      bindRemote();
     });
   });
 
   $('.nav.nav-tabs li.active a[data-toggle="tab"]').trigger('shown.bs.tab');
-  bindModalClicks();
 
   (function refreshCount() {
     $.getJSON(dj_counts_dj_reports_path).success(function(data){

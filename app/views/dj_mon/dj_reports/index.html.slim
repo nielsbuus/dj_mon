@@ -29,6 +29,7 @@ script#dj_reports_template type="text/x-handlebars-template"
         th.date Run at
         th.date Created at
         th.date Failed at
+        th
 
     tbody
       | {{#.}}
@@ -43,21 +44,22 @@ script#dj_reports_template type="text/x-handlebars-template"
         td
           | {{attempts}}
         td
-          a href="#last_error_template" data-content="{{last_error}}" data-toggle="modal" data-target="last-error-modal" title='Last Error' {{last_error_summary}}
+          a href="#last_error_template" data-content="{{last_error}}" data-toggle="modal" data-target="#last-error-modal" title='Last Error' {{last_error_summary}}
         td.date
           | {{run_at}}
         td.date
           | {{created_at}}
         td.date
-          | {{#failed}}
           | {{failed_at}}
-
-          = form_tag CGI.unescape(retry_dj_report_path(id: "{{id}}")), method: :post, class: 'form-inline' do
-            = submit_tag 'Retry', class: 'btn btn-info btn-mini'
-
-          = form_tag CGI.unescape(dj_report_path(id: "{{id}}")), method: :delete, class: 'form-inline' do
-            = submit_tag 'Delete', class: 'btn btn-danger btn-mini'
-
+        td
+          | {{#failed}}
+          .btn-group
+            = link_to CGI.unescape(retry_dj_report_path(id: "{{id}}")), method: :post, remote: true, class: 'btn btn-info btn-sm' do
+              span.glyphicon.glyphicon-repeat =>
+              | Retry
+            = link_to CGI.unescape(dj_report_path(id: "{{id}}")), method: :delete, remote: true, class: 'btn btn-danger btn-sm' do
+              span.glyphicon.glyphicon-trash =>
+              | Delete
           | {{/failed}}
       | {{/.}}
 
