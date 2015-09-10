@@ -1,5 +1,6 @@
 p
   .lead Delayed Jobs
+  = link_to 'Reset all', reset_all_dj_reports_path, method: :post, remote: true, class: 'btn btn-warning', title: 'This will reset all jobs to run now, have zero attempts and set failed_at to nil'
 
 ul.nav.nav-tabs
   li.active
@@ -52,7 +53,6 @@ script#dj_reports_template type="text/x-handlebars-template"
         td.date
           | {{failed_at}}
         td
-          | {{#failed}}
           .btn-group
             = link_to CGI.unescape(retry_dj_report_path(id: "{{id}}")), method: :post, remote: true, class: 'btn btn-info btn-sm' do
               span.glyphicon.glyphicon-repeat =>
@@ -60,7 +60,6 @@ script#dj_reports_template type="text/x-handlebars-template"
             = link_to CGI.unescape(dj_report_path(id: "{{id}}")), method: :delete, remote: true, class: 'btn btn-danger btn-sm' do
               span.glyphicon.glyphicon-trash =>
               | Delete
-          | {{/failed}}
       | {{/.}}
 
 script#payload_template type="text/x-handlebars-template"
