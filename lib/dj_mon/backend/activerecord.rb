@@ -42,9 +42,15 @@ module DjMon
         end
 
         def retry id
-          dj = Delayed::Job.find(id)
-          dj.update_attribute :failed_at, nil if dj
+          Delayed::Job.find(id).try do |job|
+            job.update_attributes(attempts: 0, run_at: 5.seconds.ago, failed_at: nil)
+          end
         end
+
+        def reset_all
+          Delayed::Job.update_all(attempts: 0, run_at: 5.seconds.ago, failed_at: nil)
+        end
+
       end
     end
   end

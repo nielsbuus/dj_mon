@@ -38,6 +38,11 @@ module DjMon
       respond_with DjReport.settings
     end
 
+    def reset_all
+      DjMon::Backend.reset_all
+      render nothing: true
+    end
+
     def retry
       DjMon::Backend.retry params[:id]
       respond_to do |format|
