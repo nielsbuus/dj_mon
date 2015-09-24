@@ -8,7 +8,7 @@ module DjMon
       self.delayed_job = delayed_job
     end
 
-    def as_json(options={})
+    def as_json options = {}
       {
         id: delayed_job.id.to_s,
         payload: delayed_job.handler,
@@ -29,20 +29,20 @@ module DjMon
         jobs.collect { |job| DjReport.new(job) }
       end
 
-      def all_reports
-        reports_for DjMon::Backend.limited.all
+      def all_reports page = nil
+        reports_for DjMon::Backend.all(page)
       end
 
-      def failed_reports
-        reports_for DjMon::Backend.limited.failed
+      def failed_reports page = nil
+        reports_for DjMon::Backend.failed(page)
       end
 
-      def active_reports
-        reports_for DjMon::Backend.limited.active
+      def active_reports page = nil
+        reports_for DjMon::Backend.active(page)
       end
 
-      def queued_reports
-        reports_for DjMon::Backend.limited.queued
+      def queued_reports page = nil
+        reports_for DjMon::Backend.queued(page)
       end
 
       def dj_counts

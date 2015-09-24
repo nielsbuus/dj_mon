@@ -15,8 +15,11 @@ module DjMon
         end
       end
 
-      BACKEND_METHODS << {:to => :used_backend}
-      delegate *BACKEND_METHODS
+      BACKEND_METHODS.each do |method|
+        define_method(method) do |*args|
+          used_backend.send(method, *args)
+        end
+      end
     end
   end
 end

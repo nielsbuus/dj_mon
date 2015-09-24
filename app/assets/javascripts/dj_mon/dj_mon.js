@@ -1,3 +1,24 @@
+window.populateTab = function(tab, data) {
+  var per_page = tab.data('per-page');
+  var template = $('#dj_reports_template').html();
+
+  data.pages = []
+  for(var i = 0; i < Math.ceil(data.count / per_page); i++) {
+    data.pages.push(i+1);
+  }
+  console.log(data);
+  if(data.items.length > 0) {
+    var output = Mustache.render(template, data);
+  } else {
+    var output = "<div class='alert alert-warning'>No Jobs</div>";
+  }
+
+  tab.html(output);
+  bindModals();
+  bindRemote();
+  bindPagination();
+};
+
 window.bindModals = function() {
   $('a[data-toggle=modal]').on('click', function() {
     var template = $($(this).attr('href')).html();
@@ -25,26 +46,37 @@ window.bindRemote = function() {
       method: method
     })
   });
-}
+};
+
+window.bindPagination = function() {
+  $('.pagination a').on('click', function(e) {
+    var page = $(e.target).data('page');
+    var activeTab = $('.nav-tabs .active a');
+    var tabContent = $($(activeTab).attr('href'));
+    tabContent.data('page', page);
+
+    var dataUrl = tabContent.data('url') + "?page=" + page;
+
+    $.getJSON(dataUrl).success(function(data) {
+      populateTab(tabContent, data);
+
+    }).done(function() {
+      $('.pagination a').parent().removeClass('active')
+      $('.pagination a[data-page="' + page + '"]').parent().addClass('active');
+    });
+  });
+
+  $('.pagination a[data-page="1"]').parent().addClass('active');
+};
 
 $(document).ready(function() {
   $('a[data-toggle="tab"]').bind('shown.bs.tab', function(e) {
     var currentTab = e.target;
     var tabContent = $($(currentTab).attr('href'));
-    var dataUrl = tabContent.data('url');
+    var dataUrl = tabContent.data('url') + "?page=" + tabContent.data('page');
 
-    $.getJSON(dataUrl).success(function(data){
-      var template = $('#dj_reports_template').html();
-
-      if(data.length > 0) {
-        var output = Mustache.render(template, data);
-      } else {
-        var output = "<div class='alert alert-warning'>No Jobs</div>";
-      }
-
-      tabContent.html(output);
-      bindModals();
-      bindRemote();
+    $.getJSON(dataUrl).success(function(data) {
+      populateTab(tabContent, data);
     });
   });
 
