@@ -6,7 +6,7 @@ window.populateTab = function(tab, data) {
   for(var i = 0; i < Math.ceil(data.count / per_page); i++) {
     data.pages.push(i+1);
   }
-  console.log(data);
+
   if(data.items.length > 0) {
     var output = Mustache.render(template, data);
   } else {
@@ -55,11 +55,10 @@ window.bindPagination = function() {
     var tabContent = $($(activeTab).attr('href'));
     tabContent.data('page', page);
 
-    var dataUrl = tabContent.data('url') + "?page=" + page;
+    var dataUrl = tabContent.data('url') + "?page=" + page + "&per_page=" + tabContent.data('per-page');
 
     $.getJSON(dataUrl).success(function(data) {
       populateTab(tabContent, data);
-
     }).done(function() {
       $('.pagination a').parent().removeClass('active')
       $('.pagination a[data-page="' + page + '"]').parent().addClass('active');
@@ -73,7 +72,7 @@ $(document).ready(function() {
   $('a[data-toggle="tab"]').bind('shown.bs.tab', function(e) {
     var currentTab = e.target;
     var tabContent = $($(currentTab).attr('href'));
-    var dataUrl = tabContent.data('url') + "?page=" + tabContent.data('page');
+    var dataUrl = tabContent.data('url') + "?page=" + tabContent.data('page') + "&per_page=" + tabContent.data('per-page');
 
     $.getJSON(dataUrl).success(function(data) {
       populateTab(tabContent, data);

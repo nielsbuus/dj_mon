@@ -1,28 +1,26 @@
 module DjMon
   module Backend
     module ActiveRecord
-      PER_PAGE = 50
-
       class << self
-        def all page = nil
-          paginate Delayed::Job.all, page
+        def all page = nil, per_page = 50
+          paginate Delayed::Job.all, page, per_page
         end
 
-        def failed page = nil
-          paginate Delayed::Job.where('failed_at IS NOT NULL'), page
+        def failed page = nil, per_page = 50
+          paginate Delayed::Job.where('failed_at IS NOT NULL'), page, per_page
         end
 
-        def active page = nil
-          paginate Delayed::Job.where('failed_at IS NULL AND locked_by IS NOT NULL'), page
+        def active page = nil, per_page = 50
+          paginate Delayed::Job.where('failed_at IS NULL AND locked_by IS NOT NULL'), page, per_page
         end
 
-        def queued page = nil
-          paginate Delayed::Job.where('failed_at IS NULL AND locked_by IS NULL'), page
+        def queued page = nil, per_page = 50
+          paginate Delayed::Job.where('failed_at IS NULL AND locked_by IS NULL'), page, per_page
         end
 
-        def paginate scope, page
+        def paginate scope, page, per_page
           return scope if page.nil?
-          scope.offset(PER_PAGE * (page-1)).limit(PER_PAGE)
+          scope.offset(per_page * (page-1)).limit(per_page)
         end
 
         def destroy id

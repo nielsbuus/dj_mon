@@ -29,20 +29,20 @@ module DjMon
         jobs.collect { |job| DjReport.new(job) }
       end
 
-      def all_reports page = nil
-        reports_for DjMon::Backend.all(page)
+      def all_reports page = nil, per_page = 50
+        reports_for DjMon::Backend.all(page, per_page)
       end
 
-      def failed_reports page = nil
-        reports_for DjMon::Backend.failed(page)
+      def failed_reports page = nil, per_page = 50
+        reports_for DjMon::Backend.failed(page, per_page)
       end
 
-      def active_reports page = nil
-        reports_for DjMon::Backend.active(page)
+      def active_reports page = nil, per_page = 50
+        reports_for DjMon::Backend.active(page, per_page)
       end
 
-      def queued_reports page = nil
-        reports_for DjMon::Backend.queued(page)
+      def queued_reports page = nil, per_page = 50
+        reports_for DjMon::Backend.queued(page, per_page)
       end
 
       def dj_counts

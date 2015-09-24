@@ -69,7 +69,7 @@ module DjMon
 
     def json_data(scope_name)
       {
-        items: DjReport.public_send(scope_name, params[:page].to_i || 1),
+        items: DjReport.public_send(scope_name, params[:page].to_i || 1, params[:per_page].to_i || 50),
         count: DjReport.public_send(scope_name).count
       }
     end
