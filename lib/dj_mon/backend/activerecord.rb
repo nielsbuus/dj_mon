@@ -1,44 +1,32 @@
 module DjMon
   module Backend
     module ActiveRecord
-      module LimitedProxy
-        class << self
-          def method_missing(method, *args, &block)
-            scope = ::DjMon::Backend::ActiveRecord.send(method, *args, &block)
-            limit = Rails.configuration.dj_mon.results_limit
-            limit.present? ? scope.order('id DESC').limit(limit) : scope.order('id DESC')
-          end
-
-          def respond_to?(method)
-            super || ::DjMon::Backend::ActiveRecord.respond_to?(method)
-          end
-        end
-      end
+      PER_PAGE = 50
 
       class << self
-        def limited
-          LimitedProxy
+        def all page = nil
+          paginate Delayed::Job.all, page
         end
 
-        def all
-          Delayed::Job.all
+        def failed page = nil
+          paginate Delayed::Job.where('failed_at IS NOT NULL'), page
         end
 
-        def failed
-          Delayed::Job.where('failed_at IS NOT NULL')
+        def active page = nil
+          paginate Delayed::Job.where('failed_at IS NULL AND locked_by IS NOT NULL'), page
         end
 
-        def active
-          Delayed::Job.where('failed_at IS NULL AND locked_by IS NOT NULL')
+        def queued page = nil
+          paginate Delayed::Job.where('failed_at IS NULL AND locked_by IS NULL'), page
         end
 
-        def queued
-          Delayed::Job.where('failed_at IS NULL AND locked_by IS NULL')
+        def paginate scope, page
+          return scope if page.nil?
+          scope.offset(PER_PAGE * (page-1)).limit(PER_PAGE)
         end
 
         def destroy id
-          dj = Delayed::Job.find(id)
-          dj.destroy if dj
+          Delayed::Job.find(id).try(:destroy)
         end
 
         def retry id
@@ -50,7 +38,6 @@ module DjMon
         def reset_all
           Delayed::Job.update_all(attempts: 0, run_at: 5.seconds.ago, failed_at: nil)
         end
-
       end
     end
   end

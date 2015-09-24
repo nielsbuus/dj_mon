@@ -15,19 +15,19 @@ module DjMon
     end
 
     def all
-      respond_with DjReport.all_reports
+      respond_with json_data(:all_reports)
     end
 
     def failed
-      respond_with DjReport.failed_reports
+      respond_with json_data(:failed_reports)
     end
 
     def active
-      respond_with DjReport.active_reports
+      respond_with json_data(:active_reports)
     end
 
     def queued
-      respond_with DjReport.queued_reports
+      respond_with json_data(:queued_reports)
     end
 
     def dj_counts
@@ -63,6 +63,15 @@ module DjMon
 
     def set_api_version
       response.headers['DJ-Mon-Version'] = DjMon::VERSION
+    end
+
+    private
+
+    def json_data(scope_name)
+      {
+        items: DjReport.public_send(scope_name, params[:page].to_i || 1),
+        count: DjReport.public_send(scope_name).count
+      }
     end
 
   end
