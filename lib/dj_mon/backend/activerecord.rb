@@ -3,7 +3,13 @@ module DjMon
     module ActiveRecord
       class << self
         def all page = nil, per_page = 50
-          paginate Delayed::Job.all, page, per_page
+          scope = if Delayed::Job.respond_to? :scoped
+            Delayed::Job.scoped
+          else
+            Delayed::Job.all
+          end
+
+          paginate(scope, page, per_page)
         end
 
         def failed page = nil, per_page = 50
