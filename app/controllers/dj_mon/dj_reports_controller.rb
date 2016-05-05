@@ -6,7 +6,6 @@ module DjMon
       instance_exec(&auth_monkey_patch)
     end
 
-    respond_to :json, :html
     layout 'dj_mon'
 
     before_filter :set_api_version
@@ -15,27 +14,27 @@ module DjMon
     end
 
     def all
-      respond_with json_data(:all_reports)
+      render json: json_data(:all_reports)
     end
 
     def failed
-      respond_with json_data(:failed_reports)
+      render json: json_data(:failed_reports)
     end
 
     def active
-      respond_with json_data(:active_reports)
+      render json: json_data(:active_reports)
     end
 
     def queued
-      respond_with json_data(:queued_reports)
+      render json: json_data(:queued_reports)
     end
 
     def dj_counts
-      respond_with DjReport.dj_counts
+      render json: DjReport.dj_counts
     end
 
     def settings
-      respond_with DjReport.settings
+      render json: DjReport.settings
     end
 
     def reset_all
