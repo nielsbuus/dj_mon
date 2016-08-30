@@ -1,3 +1,6 @@
+# Warning
+This fork of `dj_mon` gem was created to add a **Reset all** button which resets (deletes existing job and creates same job with same name and parameters) all present jobs.
+
 # DJ Mon [![Build Status](https://secure.travis-ci.org/akshayrawat/dj_mon.png?branch=master)](http://travis-ci.org/akshayrawat/dj_mon)
 
 A Rails engine based frontend for Delayed Job. It also has an [iPhone app](http://itunes.apple.com/app/dj-mon/id552732872).
@@ -49,7 +52,7 @@ E.g. in `config/initializers/dj_mon.rb`
 
     YourApp::Application.config.dj_mon.auth_monkey_patch = -> {
        before_filter :totally_simple_authentication
-       
+
        def totally_simple_authentication
           if params[:totally_secret_token] == env['DJ_MON_TOKEN']
             cookies[:dj_mon_authenticated] = true
