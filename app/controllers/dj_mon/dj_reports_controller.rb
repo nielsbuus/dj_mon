@@ -8,7 +8,7 @@ module DjMon
 
     layout 'dj_mon'
 
-    before_filter :set_api_version
+    before_action :set_api_version
 
     def index
     end

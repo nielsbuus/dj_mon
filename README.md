@@ -51,7 +51,7 @@ This is done by defining a monkey patch proc in a Rails initializer, which is th
 E.g. in `config/initializers/dj_mon.rb`
 
     YourApp::Application.config.dj_mon.auth_monkey_patch = -> {
-       before_filter :totally_simple_authentication
+       before_action :totally_simple_authentication
 
        def totally_simple_authentication
           if params[:totally_secret_token] == env['DJ_MON_TOKEN']
