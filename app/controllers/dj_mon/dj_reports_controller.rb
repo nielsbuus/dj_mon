@@ -12,6 +12,7 @@ module DjMon
     layout 'dj_mon'
 
     before_action :set_api_version
+    skip_before_action :verify_authenticity_token
 
     def index
     end

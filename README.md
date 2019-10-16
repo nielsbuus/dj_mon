@@ -25,8 +25,5 @@ By default, DjMons controller will inherit from `ApplicationController`, but you
 In `config/application.rb`, add the following inside the module, you add the following line
 
     config.dj_mon.parent_controller = "Admin::AdminController"
-        
 
 Now visit `http://localhost:3000/dj_mon` and profit!
-
-![Screenshot](https://github.com/akshayrawat/dj_mon_demo/raw/master/docs/screenshot.jpg)
