@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email           = ["projects@akshay.cc"]
   s.homepage        = "https://github.com/akshayrawat/dj_mon"
 
-  s.add_dependency "rails", ">= 3.1"
+  s.add_dependency "rails", ">= 5"
   s.add_dependency "slim", ">= 3"
 
   s.add_development_dependency 'delayed_job_active_record'
