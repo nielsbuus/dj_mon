@@ -4,15 +4,11 @@ A Rails engine based frontend for Delayed Job.
 
 Add this line to your application's Gemfile:
 
-    gem 'dj_mon'
+    gem 'dj_mon', github: "nielsbuus/dj_mon"
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install dj_mon
 
 ## Usage
 
