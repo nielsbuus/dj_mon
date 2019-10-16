@@ -1,10 +1,13 @@
-module DjMon
-  class DjReportsController < ActionController::Base
+parent_controller_name = Rails.configuration.dj_mon.parent_controller
 
-    auth_monkey_patch = Rails.configuration.dj_mon.auth_monkey_patch
-    if auth_monkey_patch.present?
-      instance_exec(&auth_monkey_patch)
-    end
+ParentClass = if parent_controller_name.present?
+  parent_controller_name.constantize
+else
+  ::ApplicationController
+end
+
+module DjMon
+  class DjReportsController < ParentClass
 
     layout 'dj_mon'
 
